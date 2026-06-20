@@ -9,7 +9,7 @@ Inject and enforce minimalism, production hardening, and design consistency rule
 
 With prodtail, it is **fewer tokens**, **fewer lines of refactored code**, **better design**, and **better security** for vibe-coded apps.
 
-`prodtail` checks your codebase for security vulnerabilities, performance bottlenecks, design token drift, SEO metadata errors, and dead code, generating a **Production Readiness Score**. It also configures agent rule instructions for Cursor, Claude Code, Cline, Roo, Windsurf, and Antigravity, and offers a safe file-pruning approval workflow.
+`prodtail` is an all-in-one developer suite that audits build readiness, strips AI-generated formatting artifacts (like triple-dashes), and stops destructive file operations across Cursor, Claude Code, Cline, Roo, Windsurf, and Antigravity. It checks your codebase for security vulnerabilities, performance bottlenecks, design token drift, SEO metadata errors, and dead code, generating a **Production Readiness Score**.
 
 ---
 
