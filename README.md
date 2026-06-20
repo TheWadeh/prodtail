@@ -1,71 +1,139 @@
 # prodtail
 
-A production readiness and minimalism rules enforcer CLI for AI coding agents (Cursor, Claude Code, Cline, Roo, Windsurf, Antigravity).
+[![Node.js Version](https://img.shields.io/badge/node-%3E%3D22.6.0-blue.svg)](https://nodejs.org/)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Style: Open Design](https://img.shields.io/badge/style-Open--Design-purple.svg)](https://github.com/TheWadeh/prodtail)
+[![Inspired by: Ponytail](https://img.shields.io/badge/inspired%20by-Ponytail-green.svg)](https://github.com/TheWadeh/prodtail)
 
-`prodtail` checks your codebase for security, performance, design consistency, SEO metadata, and dead code, and provides a production-readiness audit score. It also injects agent rules configurations and safely prompts you before deleting files.
+Inject and enforce minimalism, production hardening, and design consistency rules across AI coding agents.
 
----
-
-## Prerequisites
-
-- **Node.js**: Version `22.6.0` or higher (which supports executing TypeScript directly using native type stripping).
-
-## Installation
-
-### 1. Global Installation (via NPM)
-Once published to the NPM registry, it can be installed globally:
-```bash
-npm install -g prodtail
-```
-Or executed on-demand without installation:
-```bash
-npx prodtail init
-```
-
-### 2. Local Installation from Source
-If sharing the folder directly or via a Git repository:
-1. Clone or copy the folder to your machine.
-2. In the `prodtail` directory, run:
-   ```bash
-   npm link
-   ```
-   *(If you get permission errors, you can create a local symlink in your user binary path, e.g., `ln -sf /path/to/prodtail/src/index.ts ~/.local/bin/prodtail`)*
+`prodtail` checks your codebase for security vulnerabilities, performance bottlenecks, design token drift, SEO metadata errors, and dead code, generating a **Production Readiness Score**. It also configures agent rule instructions for Cursor, Claude Code, Cline, Roo, Windsurf, and Antigravity, and offers a safe file-pruning approval workflow.
 
 ---
 
-## Commands
+## 💻 Visual Audit Interface
+
+Here is what the terminal output looks like when running `prodtail audit`:
+
+```ansi
+$ prodtail audit
+Running deeper Production Readiness Audit...
+
+┌────────────────────────────────────────────────────────┐
+│  PRODTAIL AUDIT REPORT                                 │
+│  Ready Score: 94/100 [PRODUCTION READY]                │
+├────────────────────────────────────────────────────────┤
+│  Files Analyzed: 12      Findings: 3      Status: OK   │
+└────────────────────────────────────────────────────────┘
+
+[1. Executive Summary]
+  Codebase is healthy. Fix warning items below to satisfy
+  prodtail production standards.
+
+[2. Risk Summary]
+  🔴 Critical: 0      🟡 Warning: 2      🔵 Info: 1
+
+[3. Detailed Warnings]
+  ⚠️  [Performance] src/components/Card.tsx:14
+     Hardcoded hex color detected: "#F3F4F6"
+     Rec: Use standard theme CSS variables from Open Design.
+
+  ⚠️  [Reliability] src/utils/db.ts:42
+     Synchronous file system call: "fs.readFileSync"
+     Rec: Use asynchronous fs methods to avoid event loop blockages.
+
+✔ Audit finished. No codebase modifications were performed.
+```
+
+---
+
+## ⚡ The Vibe Coding Pain Points
+
+AI coding agents ("vibe coding") generate code at high speeds, but can skip crucial production reviews. `prodtail` serves as the hardening check layer:
+
+| Vibe Coding Problem | Prodtail Solution | Enforced Rule |
+| :--- | :--- | :--- |
+| **Bloated Dependencies** | Prioritizes native platform features & standard library options. | `ponytail:minimalism` |
+| **Security Leaks** | Blocks credentials, secrets, & API keys in client-side code. | `production:hardening` |
+| **Brittle Aesthetics** | Intercepts inline styled components & hardcoded hex values. | `opendesign:aesthetics` |
+| **Destructive Refactors** | Computes static dependency trees to block dynamic deletions. | `safety:pruning` |
+
+---
+
+## 🧬 Inspirations & Lineage
+
+`prodtail` unites three core software design directions:
+
+### 1. Inspired by Ponytail (Minimalism)
+Adopted strict minimalism principles:
+- Prefer boring over clever.
+- Use the standard library first.
+- Choose native platform features (e.g., standard HTML elements) over custom wrappers.
+- Question complex features: *Does the user actually need X, or does Y cover it?*
+
+### 2. Rooted in Open Design (Aesthetics)
+Adheres to visual quality guidelines:
+- Enforce defined CSS custom property variables and HSL-tailored schemes over hardcoded colors.
+- Maintain typographic scales (comfortable line-heights, weights, and fonts like Inter).
+- Avoid layout fragmentation (standardize margins, gutters, border-radii, and shadows).
+
+### 3. Fitted for Production (Hardening)
+Ensures real-world resilience:
+- Prioritize load times and runtime speed (blocking synchronous loop calls).
+- Embed SEO metadata (title tags, unique `<h1>` check, search crawlability).
+- Handle exceptions and timeouts defensively (default values, custom error fallbacks).
+
+---
+
+## 🚀 Quick Start
+
+### Installation
+
+`prodtail` runs natively on **Node.js v22.6.0+** using native TypeScript type-stripping (no compiler required).
+
+```bash
+# Clone the repository
+git clone https://github.com/TheWadeh/prodtail.git
+
+# Move to directory
+cd prodtail
+
+# Link the executable globally on your system
+npm link
+```
+
+*Note: Once linked, the `prodtail` command is registered globally on your machine.*
+
+---
+
+## 🛠 Command Guide
 
 ### `prodtail init`
-Initializes a local rules configuration under `.prodtail/` and injects agent instructions into active directories:
-- **Cursor**: `.cursor/rules/prodtail.mdc`
-- **Claude Code**: `CLAUDE.md`
-- **Cline**: `.clinerules` or `.clinerules/prodtail.md`
-- **Roo**: `.roorules` or `.roorules/prodtail.md`
-- **Windsurf**: `.windsurf/rules/prodtail.md`
-- **Antigravity**: `AGENTS.md` and `.agents/rules/prodtail.md`
+Initializes configurations and injects instruction rules into your agent's active workspaces:
+*   **Cursor**: `.cursor/rules/prodtail.mdc`
+*   **Claude Code**: `CLAUDE.md`
+*   **Cline**: `.clinerules`
+*   **Roo**: `.roorules`
+*   **Windsurf**: `.windsurf/rules/prodtail.md`
+*   **Antigravity**: `AGENTS.md` & `.agents/rules/prodtail.md`
 
-It also automatically updates the project's `.gitignore` to prevent rules files from being committed and pushed to GitHub.
+> [!NOTE]
+> `prodtail init` automatically appends rules directories and files to your local `.gitignore` so they are never committed to your public git branches.
 
 ### `prodtail scan`
-Performs lightweight static checks across the codebase:
-- **Security**: Hardcoded secrets, API keys, and client-side environment leaks.
-- **Dependency**: Deprecated packages and unused modules.
-- **Performance**: Nested loop bottlenecks and synchronous file system calls in source directories.
-- **SEO & AI**: Missing metadata tags and heading structure deficits.
-- **Design**: Hardcoded hex colors and inline styling violations.
+Performs static checks on files, detecting client environment variables, duplicate code hashes, synchronous loop locks, and inline hex variables.
 
 ### `prodtail audit`
-Runs a deep static scan, calculates a **Production Readiness Score (0-100)**, and outputs a risk report with recommended fixes and executive insights. No code modifications are performed during the audit.
+Runs the full analysis system, outputs an executive summary, lists warning locations, and calculates the **Production Readiness Score**.
 
 ### `prodtail approve [file]`
-Scans the project for unused files (or verifies a specific file), checks import references, and prompts you to approve deletion:
-- **SAFE TO DELETE**: 0 imports detected.
-- **UNCERTAIN**: Referenced in build/test files only.
-- **HIGH RISK**: Actively imported in application source files.
+Scans the project for unused files (or a targeted module) and prompts you to validate deletions based on import safety:
+*   **SAFE TO DELETE**: 0 occurrences found in code.
+*   **UNCERTAIN**: Found in config configurations or test boundaries.
+*   **HIGH RISK**: Actively imported in application entry points.
 
 ---
 
-## License
+## 📄 License
 
-MIT
-# prodtail
+MIT License. See [LICENSE](LICENSE) for details.
