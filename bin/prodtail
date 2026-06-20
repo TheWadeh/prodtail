@@ -1,0 +1,148 @@
+#!/usr/bin/env -S node --experimental-strip-types
+import { runInit } from '../src/init.ts';
+import { performScan, logScanReport } from '../src/scan.ts';
+import { runApprove } from '../src/approve.ts';
+import * as path from 'path';
+
+function showHelp() {
+  console.log(`
+\x1b[36;1mprodtail\x1b[0m - AI Agent Rules & Production Hardening CLI
+
+\x1b[33mUsage:\x1b[0m
+  prodtail <command> [options]
+
+\x1b[33mCommands:\x1b[0m
+  \x1b[32minit\x1b[0m               Initialize ruleset directory (.prodtail) and inject configurations.
+  \x1b[32mscan\x1b[0m               Perform static analysis checks (Security, Deps, Design, SEO, Perf).
+  \x1b[32maudit\x1b[0m              Deep-dive codebase analysis and calculate Production Readiness Score.
+  \x1b[32mapprove [file]\x1b[0m      Verify and interactively confirm proposed file deletions.
+
+\x1b[33mOptions:\x1b[0m
+  -v, --verbose      Show additional details and recommendations.
+  -h, --help         Show this help screen.
+`);
+}
+
+async function run() {
+  const args = process.argv.slice(2);
+  const command = args[0];
+  const targetDir = process.cwd();
+
+  if (!command || command === '-h' || command === '--help') {
+    showHelp();
+    return;
+  }
+
+  const isVerbose = args.includes('--verbose') || args.includes('-v');
+
+  try {
+    switch (command) {
+      case 'init':
+        await runInit(targetDir);
+        break;
+
+      case 'scan': {
+        const result = performScan(targetDir);
+        logScanReport(result, isVerbose);
+        break;
+      }
+
+      case 'audit': {
+        runAudit(targetDir);
+        break;
+      }
+
+      case 'approve': {
+        const specificFile = args.slice(1).find(arg => !arg.startsWith('-'));
+        await runApprove(targetDir, specificFile);
+        break;
+      }
+
+      default:
+        console.error(`\x1b[31mError: Unknown command "${command}"\x1b[0m`);
+        showHelp();
+        process.exit(1);
+    }
+  } catch (err: any) {
+    console.error(`\x1b[31;1mCLI Error: ${err.message}\x1b[0m`);
+    process.exit(1);
+  }
+}
+
+function runAudit(targetDir: string) {
+  console.log(`\x1b[36mRunning deeper Production Readiness Audit...\x1b[0m`);
+  const result = performScan(targetDir);
+  
+  const score = result.readinessScore;
+  let scoreColor = '\x1b[31;1m';
+  let status = 'UNSAFE / HIGH RISK';
+  if (score >= 90) {
+    scoreColor = '\x1b[32;1m';
+    status = 'PRODUCTION READY';
+  } else if (score >= 70) {
+    scoreColor = '\x1b[33;1m';
+    status = 'NEEDS MINOR WORK';
+  } else if (score >= 50) {
+    scoreColor = '\x1b[33m';
+    status = 'STABILITY RISK';
+  }
+
+  console.log(`\n==================================================`);
+  console.log(`\x1b[1mPRODTAIL AUDIT REPORT\x1b[0m`);
+  console.log(`==================================================`);
+  console.log(`Production Readiness Score: ${scoreColor}${score}/100\x1b[0m [${status}]`);
+  console.log(`Files Analyzed: ${result.filesScanned}`);
+  console.log(`Total Findings: ${result.findings.length}`);
+  console.log(`--------------------------------------------------`);
+
+  console.log(`\n\x1b[36;1m[1. Executive Summary]\x1b[0m`);
+  if (score >= 90) {
+    console.log(`  The codebase is extremely solid. It matches standard security, design,`);
+    console.log(`  and code quality principles. Highly ready for deployment.`);
+  } else if (score >= 70) {
+    console.log(`  The codebase is mostly healthy, but minor improvements are recommended.`);
+    console.log(`  Fix the pending warnings and information issues to secure optimal stability.`);
+  } else {
+    console.log(`  CRITICAL: The codebase contains major security vulnerability patterns,`);
+    console.log(`  leaked keys, or severe duplicate/dead code. Fix these immediately.`);
+  }
+
+  const critical = result.findings.filter(f => f.severity === 'CRITICAL');
+  const warning = result.findings.filter(f => f.severity === 'WARNING');
+  const info = result.findings.filter(f => f.severity === 'INFO');
+
+  console.log(`\n\x1b[36;1m[2. Risk Report]\x1b[0m`);
+  console.log(`  🔴 Critical Issues : ${critical.length}`);
+  console.log(`  🟡 Warning Issues  : ${warning.length}`);
+  console.log(`  🔵 Info Issues     : ${info.length}`);
+
+  if (critical.length > 0) {
+    console.log(`\n\x1b[31;1mCRITICAL SECURITY & RELIABILITY INSIGHTS:\x1b[0m`);
+    for (const f of critical) {
+      console.log(`  • \x1b[4m${f.file}\x1b[0m${f.line ? `:${f.line}` : ''}: ${f.message}`);
+      console.log(`    Recommendation: ${f.recommendation}`);
+    }
+  }
+
+  if (warning.length > 0) {
+    console.log(`\n\x1b[33;1mWARNING PERFORMANCE & DESIGN INSIGHTS:\x1b[0m`);
+    for (const f of warning) {
+      console.log(`  • \x1b[4m${f.file}\x1b[0m${f.line ? `:${f.line}` : ''}: ${f.message}`);
+      console.log(`    Recommendation: ${f.recommendation}`);
+    }
+  }
+
+  console.log(`\n\x1b[36;1m[3. Next Actions Summary]\x1b[0m`);
+  let index = 1;
+  if (critical.length > 0) {
+    console.log(`  ${index++}. Resolve all critical security issues and remove hardcoded secrets.`);
+  }
+  if (warning.length > 0) {
+    console.log(`  ${index++}. Clean up warning items, remove synchronous file operations, and clean duplicate modules.`);
+  }
+  console.log(`  ${index++}. Verify rules configuration with your AI coding assistant (Cursor / Antigravity).`);
+
+  console.log(`\n\x1b[32;1mAudit finished. No codebase modifications were performed.\x1b[0m\n`);
+}
+
+run();

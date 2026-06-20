@@ -1,0 +1,24 @@
+{
+  "name": "prodtail",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Production readiness and minimalism rules enforcer CLI for AI coding agents",
+  "bin": {
+    "prodtail": "bin/prodtail"
+  },
+  "scripts": {
+    "test": "node --experimental-strip-types tests/self-check.ts"
+  },
+  "keywords": [
+    "cli",
+    "ai",
+    "agents",
+    "rules",
+    "production-hardening",
+    "ponytail",
+    "open-design"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {}
+}
