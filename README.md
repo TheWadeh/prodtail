@@ -15,36 +15,9 @@ With prodtail, it is **fewer tokens**, **fewer lines of refactored code**, **bet
 
 ## 💻 Visual Audit Interface
 
-Here is what the terminal output looks like when running `prodtail audit`:
+Here is the visual audit interface of `prodtail` hosted at [prodtail.abdulfetah.site](https://prodtail.abdulfetah.site):
 
-```text
-$ prodtail audit
-Running deeper Production Readiness Audit...
-
-PRODTAIL AUDIT REPORT                   [ 94 / 100 Score ]
-──────────────────────────────────────────────────────────
-Files: 12             Findings: 3            Status: Ready
-
-1. EXECUTIVE SUMMARY
-Codebase is healthy. Fix warnings below to satisfy prodtail
-production standards.
-
-2. RISK SUMMARY
-🔴 Critical: 0    🟡 Warning: 2    🔵 Info: 1
-
-3. DETAILED WARNINGS
-┌── [Performance] src/components/Card.tsx:14 ─────────────
-│   Hardcoded hex color detected: "#F3F4F6"
-│   Use CSS variables from Open Design.
-└──
-
-┌── [Reliability] src/utils/db.ts:42 ─────────────────────
-│   Synchronous call: fs.readFileSync
-│   Use asynchronous fs methods.
-└──
-
-✔ Audit finished. No codebase modifications were performed.
-```
+![Prodtail Hero Visual](assets/hero.png)
 
 ---
 
