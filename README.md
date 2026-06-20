@@ -100,6 +100,9 @@ Performs static checks on files, detecting client environment variables, duplica
 ### `prodtail audit`
 Runs the full analysis system, outputs an executive summary, lists warning locations, and calculates the **Production Readiness Score**.
 
+### `prodtail polish`
+Recursively scans your project text files (markdown, HTML, JS, TS, etc.) to strip AI-style formatting artifacts. It removes decorative standalone divider lines (`---` and `***`) while preserving valid frontmatter metadata, and replaces decorative em-dashes (` — ` and ` --- `) with normal hyphens.
+
 ### `prodtail approve [file]`
 Scans the project for unused files (or a targeted module) and prompts you to validate deletions based on import safety:
 *   **SAFE TO DELETE**: 0 occurrences found in code.

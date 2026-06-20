@@ -2,6 +2,7 @@
 import { runInit } from '../src/init.ts';
 import { performScan, logScanReport } from '../src/scan.ts';
 import { runApprove } from '../src/approve.ts';
+import { runPolish } from '../src/polish.ts';
 import * as path from 'path';
 
 function showHelp() {
@@ -15,6 +16,7 @@ function showHelp() {
   \x1b[32minit\x1b[0m               Initialize ruleset directory (.prodtail) and inject configurations.
   \x1b[32mscan\x1b[0m               Perform static analysis checks (Security, Deps, Design, SEO, Perf).
   \x1b[32maudit\x1b[0m              Deep-dive codebase analysis and calculate Production Readiness Score.
+  \x1b[32mpolish\x1b[0m             Strip decorative triple-dashes and EM dash separators from project texts.
   \x1b[32mapprove [file]\x1b[0m      Verify and interactively confirm proposed file deletions.
 
 \x1b[33mOptions:\x1b[0m
@@ -49,6 +51,11 @@ async function run() {
 
       case 'audit': {
         runAudit(targetDir);
+        break;
+      }
+
+      case 'polish': {
+        await runPolish(targetDir);
         break;
       }
 
